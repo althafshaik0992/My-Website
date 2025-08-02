@@ -1,54 +1,39 @@
 package com.example.mywebiste.Controller;
 
-import com.example.mywebiste.Model.Meeting;
-import com.example.mywebiste.Repository.MeetingRepository;
+import com.example.mywebiste.Model.ScheduleRequest;
+import com.example.mywebiste.Model.ScheduleResponse;
+import com.example.mywebiste.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MeetingController {
 
-
-
-
     @Autowired
-    private MeetingRepository meetingRepository;
+    protected MeetingService meetingService;
 
-    @GetMapping("/meetings")
-    public String showMeetings(Model model) {
-        List<Meeting> meetings = meetingRepository.findAll();
-        model.addAttribute("meetings", meetings);
-        model.addAttribute("newMeeting", new Meeting());
-        return "zoom";
+
+
+    @GetMapping("/schedule-meeting")
+    public String scheduleMeeting() {
+        return "index";
     }
 
 
-        @PostMapping("/meetings")
-        public String createMeeting(@ModelAttribute Meeting meeting, Model model) {
-            // Generate a mock Zoom link (you can replace this with real integration later)
-            meeting.setZoomLink("https://zoom.us/j/" + (int)(Math.random() * 1_000_000_000));
 
-            // Save the meeting to database (assuming JPA repository is autowired)
-            meetingRepository.save(meeting);
-
-            // Add the meeting to the model if you want to show it on next page
-            model.addAttribute("meeting", meeting);
-
-            // Redirect to a page that confirms booking or shows zoom link
-            return "redirect:/zoom";  // or return "zoom.html" if you're rendering directly
+    @PostMapping("/schedule-meeting")
+    public ResponseEntity<ScheduleResponse> scheduleMeeting(@RequestBody ScheduleRequest request) {
+        // Validate the request data
+        if (request.getName() == null || request.getEmail() == null || request.getMeetingDate() == null || request.getMeetingTime() == null) {
+            return ResponseEntity.badRequest().body(new ScheduleResponse("error", "All fields are required."));
         }
 
+        // Call the service to handle the scheduling logic
+        ScheduleResponse response = meetingService.schedule(request);
 
-    @GetMapping("/delete/{id}")
-    public String deleteMeeting(@PathVariable Long id) {
-        meetingRepository.deleteById(id);
-        return "redirect:/zoom";
+        // Return the response to the frontend
+        return ResponseEntity.ok(response);
     }
 }

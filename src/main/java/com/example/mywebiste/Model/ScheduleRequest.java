@@ -8,7 +8,10 @@ import lombok.Setter;
 public class ScheduleRequest {
     private String name;
     private String email;
-    private String date;
-    private String time;
+    private String meetingDate;
+    private String meetingTime;
+
+
+
 
 }
