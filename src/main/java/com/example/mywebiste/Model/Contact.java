@@ -30,8 +30,8 @@ public class Contact {
     private String phoneNumber;
 
 
-    @Column(name = "comments")
-    private String comments;
+    @Column(name = "message")
+    private String message;
 
     public Contact() {
         // Default constructor required by JPA

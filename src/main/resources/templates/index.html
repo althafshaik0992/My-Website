@@ -137,7 +137,8 @@
                 <!-- Contact Form -->
                 <div class="lg:w-1/2 p-8 bg-gray-900 rounded-3xl shadow-2xl">
                     <h3 class="text-2xl font-bold text-center mb-4">Send a Message</h3>
-                    <form id="contactForm" action="mailto:your_email@example.com" method="post" enctype="text/plain">
+                    <!-- Form updated for AJAX submission -->
+                    <form id="contactForm">
                         <div class="mb-6">
                             <label for="name" class="block text-gray-300 text-sm font-medium mb-2">Name</label>
                             <input type="text" id="name" name="name" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300" required>
@@ -211,16 +212,6 @@
 
 <!-- JavaScript for smooth scrolling and form feedback -->
 <script>
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
     // Function to show a message box
     function showMessage(message, type = 'success') {
         const messageBox = document.getElementById('messageBox');
@@ -238,19 +229,56 @@
         }, 3000);
     }
 
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
     // Contact form submission handler
     const contactForm = document.getElementById('contactForm');
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-        const subject = encodeURIComponent(`Message from your portfolio website by ${name}`);
-        const body = encodeURIComponent(message);
-        const mailtoLink = `mailto:your_email@example.com?subject=${subject}&body=${body}`;
-        window.location.href = mailtoLink;
-        showMessage('Redirecting to your email client...');
-        contactForm.reset();
+
+        const form = e.target;
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        submitButton.textContent = 'Sending...';
+
+        try {
+            const response = await fetch('/send-contact-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showMessage(result.message, 'success');
+                form.reset(); // Clear the form on success
+            } else {
+                showMessage(result.message || 'An error occurred.', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showMessage('An error occurred. Please try again.', 'error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitButton.textContent = 'Send Message';
+        }
     });
 
     // Schedule meeting form submission handler
@@ -270,17 +298,17 @@
         responseContainer.innerHTML = '';
 
         try {
-            // Simulate a network delay of 1.5 seconds
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const response = await fetch('/schedule-meeting', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
 
-            // Mock a successful JSON response from the backend
-            const result = {
-                status: 'success',
-                message: 'Meeting successfully scheduled!',
-                meetingLink: 'https://meet.google.com/' + Math.random().toString(36).substring(2, 12)
-            };
+            const result = await response.json();
 
-            if (result.status === 'success') {
+            if (response.ok) {
                 showMessage(result.message, 'success');
                 responseContainer.innerHTML = `
                     <div class="p-4 bg-gray-700 rounded-lg shadow-inner text-center">
@@ -292,11 +320,11 @@
                 `;
                 form.reset(); // Clear the form on success
             } else {
-                showMessage(result.message, 'error');
+                showMessage(result.message || 'An error occurred.', 'error');
             }
         } catch (error) {
             console.error('Error:', error);
-            showMessage('An error occurred during simulation.', 'error');
+            showMessage('An error occurred. Please try again.', 'error');
         } finally {
             submitButton.disabled = false;
             submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
