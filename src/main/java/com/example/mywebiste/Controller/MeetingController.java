@@ -5,6 +5,7 @@ import com.example.mywebiste.Model.ScheduleRequest;
 import com.example.mywebiste.Model.ScheduleResponse;
 import com.example.mywebiste.service.EmailService;
 import com.example.mywebiste.service.MeetingService;
+import com.example.mywebiste.service.ZoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class MeetingController {
 
     @Autowired
     protected MeetingService meetingService;
+
+    @Autowired
+    ZoomService zoomService;
 
 
 
@@ -81,11 +85,17 @@ public class MeetingController {
 
     @PostMapping("/schedule-meeting")
     public ResponseEntity<Map<String, String>> handleScheduleForm(@RequestBody ScheduleRequest meetingForm) {
+
         try {
-            // Generate a mock Zoom meeting link.
-            // For Microsoft Teams, you could use a similar URL pattern:
-            // "https://teams.microsoft.com/l/meetup-join/..."
-            String meetingLink = "https://zoom.us/j/" + UUID.randomUUID().toString().replace("-", "");
+            // Use ZoomService to create a real Zoom meeting
+            String meetingLink = zoomService.createZoomMeeting(meetingForm);
+
+            if (meetingLink == null) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("message", "Failed to create Zoom meeting. Please check server logs.");
+                return ResponseEntity.status(500).body(errorResponse);
+            }
+
             emailService.sendMeetingEmail(meetingForm, meetingLink);
 
             Map<String, String> response = new HashMap<>();

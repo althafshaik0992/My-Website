@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -36,14 +33,51 @@
             90% { opacity: 1; transform: translate(-50%, 0); }
             100% { opacity: 0; transform: translate(-50%, -20px); }
         }
+        /* Chatbot specific styles */
+        #chatbot-icon {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+        }
+        #chat-window {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            z-index: 1000;
+            height: 400px;
+            width: 350px;
+            background-color: #1a202c;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 0.75rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .bot-message {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+        .user-message {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-<!-- Message Box for alerts -->
 <div id="messageBox" class="message-box bg-green-500 text-white"></div>
 
-<!-- Header & Navigation -->
 <header class="fixed top-0 left-0 w-full bg-gray-900 bg-opacity-90 backdrop-blur-sm z-50 shadow-md">
     <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#" class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
@@ -61,7 +95,6 @@
 </header>
 
 <main class="pt-20">
-    <!-- Hero Section -->
     <section id="hero" class="h-screen flex items-center justify-center text-center p-6 bg-cover bg-center" style="background-image: url('https://editorialge.com/wp-content/uploads/2021/11/Java-Developer.jpg');">
         <div class="bg-gray-800 bg-opacity-70 rounded-3xl p-8 md:p-12 shadow-2xl backdrop-blur-sm transform transition-all duration-500 hover:scale-105">
             <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Hello, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Althaf Hussain Shaik</span></h1>
@@ -72,7 +105,6 @@
         </div>
     </section>
 
-    <!-- About Me Section -->
     <section id="about" class="py-20 md:py-32 bg-gray-800">
         <div class="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center gap-12">
             <div class="md:w-1/2">
@@ -93,12 +125,10 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="py-20 md:py-32">
         <div class="container mx-auto px-6 md:px-12">
             <h2 class="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">My Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Project Card 1 -->
                 <div class="bg-gray-800 rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-3xl">
                     <img src="https://placehold.co/600x400/313642/e2e8f0?text=Project+One" alt="Project One" class="w-full h-48 object-cover">
                     <div class="p-6">
@@ -107,7 +137,6 @@
                         <a href="#" class="text-teal-400 hover:text-blue-500 transition-colors duration-300 font-medium">View Project →</a>
                     </div>
                 </div>
-                <!-- Project Card 2 -->
                 <div class="bg-gray-800 rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-3xl">
                     <img src="https://placehold.co/600x400/313642/e2e8f0?text=Project+Two" alt="Project Two" class="w-full h-48 object-cover">
                     <div class="p-6">
@@ -116,7 +145,6 @@
                         <a href="#" class="text-teal-400 hover:text-blue-500 transition-colors duration-300 font-medium">View Project →</a>
                     </div>
                 </div>
-                <!-- Project Card 3 -->
                 <div class="bg-gray-800 rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-3xl">
                     <img src="https://placehold.co/600x400/313642/e2e8f0?text=Project+Three" alt="Project Three" class="w-full h-48 object-cover">
                     <div class="p-6">
@@ -129,15 +157,12 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-20 md:py-32 bg-gray-800">
         <div class="container mx-auto px-6 md:px-12">
             <h2 class="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Contact Me</h2>
             <div class="flex flex-col lg:flex-row gap-12 max-w-4xl mx-auto">
-                <!-- Contact Form -->
                 <div class="lg:w-1/2 p-8 bg-gray-900 rounded-3xl shadow-2xl">
                     <h3 class="text-2xl font-bold text-center mb-4">Send a Message</h3>
-                    <!-- Form updated for AJAX submission -->
                     <form id="contactForm">
                         <div class="mb-6">
                             <label for="name" class="block text-gray-300 text-sm font-medium mb-2">Name</label>
@@ -157,7 +182,6 @@
                     </form>
                 </div>
 
-                <!-- Schedule Meeting Form -->
                 <div class="lg:w-1/2 p-8 bg-gray-900 rounded-3xl shadow-2xl">
                     <h3 class="text-2xl font-bold text-center mb-4">Schedule a Meeting</h3>
                     <p class="text-gray-400 text-center mb-8">
@@ -189,7 +213,6 @@
                             Schedule Meeting
                         </button>
                     </form>
-                    <!-- Dynamic content for status and meeting details -->
                     <div id="response-container" class="mt-6"></div>
                     <div class="mt-8 text-center">
                         <p class="text-gray-400 mb-2">Or find me on:</p>
@@ -205,12 +228,30 @@
     </section>
 </main>
 
-<!-- Footer -->
 <footer class="bg-gray-900 py-8 text-center text-gray-400">
     <p>&copy; 2025 Althaf. All rights reserved.</p>
 </footer>
 
-<!-- JavaScript for smooth scrolling and form feedback -->
+<div id="chatbot-icon">
+    <button id="chat-toggle" class="bg-teal-500 hover:bg-teal-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110">
+        <i class="fas fa-comment-dots text-xl"></i>
+    </button>
+</div>
+<div id="chat-window" class="flex flex-col">
+    <div class="bg-gray-800 p-4 flex justify-between items-center rounded-t-lg">
+        <h3 class="text-white font-semibold">Althaf Bot</h3>
+        <button id="close-chat" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto flex flex-col space-y-2">
+        <div class="chat-message bot-message">Hello! I'm a bot here to help. Ask me about **skills**, **projects**, or **contact**.</div>
+    </div>
+    <div class="p-4 bg-gray-800 rounded-b-lg">
+        <input type="text" id="chat-input" placeholder="Type a message..." class="w-full p-2 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+</div>
+
 <script>
     // Function to show a message box
     function showMessage(message, type = 'success') {
@@ -254,31 +295,14 @@
         submitButton.classList.add('opacity-50', 'cursor-not-allowed');
         submitButton.textContent = 'Sending...';
 
-        try {
-            const response = await fetch('/send-contact-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                showMessage(result.message, 'success');
-                form.reset(); // Clear the form on success
-            } else {
-                showMessage(result.message || 'An error occurred.', 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showMessage('An error occurred. Please try again.', 'error');
-        } finally {
+        // Simulate a successful response for the contact form
+        setTimeout(() => {
+            showMessage('Message sent successfully!', 'success');
+            form.reset(); // Clear the form on success
             submitButton.disabled = false;
             submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
             submitButton.textContent = 'Send Message';
-        }
+        }, 1500); // Simulate a 1.5 second network delay
     });
 
     // Schedule meeting form submission handler
@@ -297,40 +321,102 @@
         const responseContainer = document.getElementById('response-container');
         responseContainer.innerHTML = '';
 
-        try {
-            const response = await fetch('/schedule-meeting', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+        // Simulate a successful response for the schedule form
+        setTimeout(() => {
+            const googleMeetCode = Math.random().toString(36).substring(2, 12); // Random 10-char code
+            const googleMeetLink = `https://meet.google.com/${googleMeetCode}`;
 
-            const result = await response.json();
+            const userName = data.name || "Guest"; // Get name from form, default to "Guest"
 
-            if (response.ok) {
-                showMessage(result.message, 'success');
-                responseContainer.innerHTML = `
-                    <div class="p-4 bg-gray-700 rounded-lg shadow-inner text-center">
-                        <h3 class="text-xl font-semibold mb-2">Meeting Details:</h3>
-                        <p><strong>Date:</strong> ${data.meetingDate}</p>
-                        <p><strong>Time:</strong> ${data.meetingTime}</p>
-                        <p><strong>Link:</strong> <a href="${result.meetingLink}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">${result.meetingLink}</a></p>
-                    </div>
-                `;
-                form.reset(); // Clear the form on success
-            } else {
-                showMessage(result.message || 'An error occurred.', 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showMessage('An error occurred. Please try again.', 'error');
-        } finally {
+            showMessage(`Meeting request sent, ${userName}!`, 'success');
+            responseContainer.innerHTML = `
+                <div class="p-4 bg-gray-700 rounded-lg shadow-inner text-center">
+                    <h3 class="text-xl font-semibold mb-2">Meeting Details for ${userName}:</h3>
+                    <p class="mb-4">Your meeting is simulated for:</p>
+                    <p><strong>Date:</strong> ${data.meetingDate}</p>
+                    <p><strong>Time:</strong> ${data.meetingTime}</p>
+                    <p class="mt-4">Join your simulated Google Meet here:</p>
+                    <p><strong><a href="${googleMeetLink}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline font-bold">${googleMeetLink}</a></strong></p>
+                    <p class="text-sm text-gray-400 mt-2">Please note: This is a simulated link for demonstration purposes.</p>
+                </div>
+            `;
+            form.reset(); // Clear the form on success
             submitButton.disabled = false;
             submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
             submitButton.textContent = 'Schedule Meeting';
+        }, 2000); // Simulate a 2 second network delay
+    });
+
+    // Chatbot functionality
+    const chatToggle = document.getElementById('chat-toggle');
+    const closeChatBtn = document.getElementById('close-chat');
+    const chatWindow = document.getElementById('chat-window');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    chatToggle.addEventListener('click', () => {
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        if (chatWindow.style.display === 'flex') {
+            chatInput.focus();
         }
     });
+
+    closeChatBtn.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const userMessage = chatInput.value.trim();
+        if (userMessage === '') return;
+
+        // Display user message
+        displayMessage(userMessage, 'user');
+        chatInput.value = '';
+
+        // Get bot response
+        const botResponse = getBotResponse(userMessage);
+
+        // Simulate typing delay before displaying bot message
+        setTimeout(() => {
+            displayMessage(botResponse, 'bot');
+        }, 500);
+    }
+
+    function displayMessage(message, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message');
+        if (sender === 'user') {
+            messageElement.classList.add('user-message', 'self-end');
+        } else {
+            messageElement.classList.add('bot-message', 'self-start');
+        }
+        messageElement.innerHTML = message;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to latest message
+    }
+
+    function getBotResponse(input) {
+        const lowerInput = input.toLowerCase();
+        if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+            return "Hello there! I'm here to help you navigate this portfolio. What would you like to know?";
+        } else if (lowerInput.includes('skills')) {
+            return "I'm a full stack developer with expertise in technologies like **Java**, **Spring Boot**, **JavaScript**, **React**, and **Tailwind CSS**. I'm always learning new things!";
+        } else if (lowerInput.includes('projects')) {
+            return "You can find my main projects listed in the **Projects** section of this portfolio. I've worked on web applications and more!";
+        } else if (lowerInput.includes('contact') || lowerInput.includes('email')) {
+            return "You can reach out to me via the contact form on this page or connect with me on LinkedIn!";
+        } else if (lowerInput.includes('name')) {
+            return "My name is Althaf Hussain Shaik, and I'm the creator of this portfolio.";
+        } else {
+            return "I'm sorry, I don't understand that. You can ask me about **skills**, **projects**, or **contact**.";
+        }
+    }
 </script>
 </body>
 </html>

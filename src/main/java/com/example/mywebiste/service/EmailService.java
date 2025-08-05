@@ -89,7 +89,8 @@ public class EmailService {
                 "Email: " + meetingForm.getEmail() + "\n" +
                 "Date: " + meetingForm.getMeetingDate() + "\n" +
                 "Time: " + meetingForm.getMeetingTime() + "\n" +
-                "Meeting Link: " + meetingLink
+                "Meeting Link: " + meetingLink + "\n\n" +
+                "Please join the meeting using the link above."
         );
 
 
