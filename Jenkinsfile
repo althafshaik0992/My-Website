@@ -37,11 +37,11 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                     withMaven(maven: 'Maven 3.8.1') {
+                    def mavenHome = tool 'Maven 3.8.1'
                                              // Build the Spring Boot application using Maven
                                              // The 'bat' step is used here for a Windows-based agent.
-                          bat "mvn clean install -DskipTests"
-                     }
+                    bat "${mavenHome}\\bin\\mvn clean install -DskipTests"
+                    }
                 }
             }
         }
