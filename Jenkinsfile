@@ -43,63 +43,6 @@ pipeline {
                 }
             }
         }
-
-        // Stage 3: Deploy Backend
-        stage('Deploy Backend') {
-            steps {
-                // Use sshagent to securely use your SSH private key
-                // The ID 'deploy-server-ssh-key' must match the Jenkins credential ID
-                sshagent(credentials: ['deploy-server-ssh-key']) {
-                    script {
-                        echo "Deploying backend to ${DEPLOY_HOST}..."
-
-                        // 1. Stop the existing backend service
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl stop portfolio-backend.service || true'" // '|| true' prevents failure if service isn't running
-
-                        // 2. Remove old JAR and properties (optional, but good for clean deployments)
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'rm -f ${BACKEND_REMOTE_DIR}/${BACKEND_JAR_NAME}'"
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'rm -f ${BACKEND_REMOTE_DIR}/${BACKEND_PROPERTIES_NAME}'"
-
-
-                        // 3. Copy the new JAR to the remote server
-                        sh "scp target/${BACKEND_JAR_NAME} ${DEPLOY_USER}@${DEPLOY_HOST}:${BACKEND_REMOTE_DIR}/"
-                        // Copy application.properties as well
-                        sh "scp src/main/resources/${BACKEND_PROPERTIES_NAME} ${DEPLOY_USER}@${DEPLOY_HOST}:${BACKEND_REMOTE_DIR}/"
-
-                        // 4. Start the backend service
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl start portfolio-backend.service'"
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl status portfolio-backend.service'" // Check status
-                        echo "Backend deployed and started."
-                    }
-                }
-            }
-        }
-
-        // Stage 4: Deploy Frontend
-        stage('Deploy Frontend') {
-            steps {
-                sshagent(credentials: ['deploy-server-ssh-key']) {
-                    script {
-                        echo "Deploying frontend to ${DEPLOY_HOST}..."
-
-                        // 1. Clean old frontend files (optional, but good for clean deployments)
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo rm -rf ${FRONTEND_REMOTE_DIR}/*'"
-
-                        // 2. Copy all frontend files (your index.html, CSS, JS)
-                        // Assuming index.html is in the root of your repo
-                        sh "scp -r index.html ${DEPLOY_USER}@${DEPLOY_HOST}:${FRONTEND_REMOTE_DIR}/"
-                        // If you have other static assets (css, js folders), copy them too:
-                        // sh "scp -r css/ ${DEPLOY_USER}@${DEPLOY_HOST}:${FRONTEND_REMOTE_DIR}/"
-                        // sh "scp -r js/ ${DEPLOY_USER}@${DEPLOY_HOST}:${FRONTEND_REMOTE_DIR}/"
-                        // Note: For a more complex frontend (React, Vue), you'd build it here and copy the 'build' or 'dist' folder.
-
-                        // 3. Reload Nginx to pick up new files
-                        sh "ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl reload nginx'"
-                        echo "Frontend deployed and Nginx reloaded."
-                    }
-                }
-            }
-        }
     }
 
     // Post-build actions (optional)
@@ -108,11 +51,11 @@ pipeline {
             echo 'Pipeline finished.'
         }
         success {
-            echo 'Deployment successful!'
+            echo 'Build successful!'
             // Add notifications here (e.g., email, Slack)
         }
         failure {
-            echo 'Deployment failed!'
+            echo 'Build failed!'
             // Add notifications here
         }
     }
