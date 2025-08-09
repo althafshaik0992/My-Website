@@ -37,9 +37,11 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    // Build the Spring Boot application using Maven
-                    // -DskipTests is used here to speed up the build, but you should run tests in a dedicated 'Test' stage
-                     bat  "mvn clean install -DskipTests"
+                     withMaven(maven: 'Maven 3.8.1') {
+                                             // Build the Spring Boot application using Maven
+                                             // The 'bat' step is used here for a Windows-based agent.
+                          bat "mvn clean install -DskipTests"
+                     }
                 }
             }
         }
