@@ -41,7 +41,6 @@ pipeline {
                                              // Build the Spring Boot application using Maven
                                              // The 'bat' step is used here for a Windows-based agent.
                     bat "${mavenHome}\\bin\\mvn clean install -DskipTests"
-                    }
                 }
             }
         }
