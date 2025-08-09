@@ -39,7 +39,7 @@ pipeline {
                 script {
                     // Build the Spring Boot application using Maven
                     // -DskipTests is used here to speed up the build, but you should run tests in a dedicated 'Test' stage
-                    sh "mvn clean install -DskipTests"
+                     bat  "mvn clean install -DskipTests"
                 }
             }
         }
