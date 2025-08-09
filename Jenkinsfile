@@ -3,6 +3,10 @@ pipeline {
     // Define the agent where the pipeline will run
     // 'any' means Jenkins will pick any available agent
     agent any
+    tools {
+            maven 'Maven 3.9.11'
+        }
+
 
     // Define environment variables, especially for sensitive data using Jenkins Credentials
 //     environment {
